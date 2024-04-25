@@ -79,21 +79,22 @@
     };
   };
 
+  deleteBtn.addEventListener('click', () => {
+    comments.pop();
+    renderComments();
+  });
+
   const copyToRespond = () => {
 
     const commentEls = document.querySelectorAll(".comment");
 
     for (const commentEl of commentEls) {
 
-      const commentText = commentEl.dataset.text;
-      const commentName = commentEl.dataset.name;
+      const commentIndex = commentEl.dataset.index;
 
       commentEl.addEventListener('click', () => {
 
-
-
-        userComment.value = `> ${commentName} "${commentText}"`;
-
+        userComment.value = `> ${comments[commentIndex].name} "${comments[commentIndex].text}"`;
 
         renderComments();
       });
@@ -102,7 +103,7 @@
 
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
-      return `<li class="comment" data-name="${comment.name}" data-text="${comment.text}">
+      return `<li class="comment" data-index="${index}">
         <div class="comment-header">
           <div>${comment.name}</div>
           <div>${comment.date}</div>

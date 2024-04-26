@@ -58,8 +58,13 @@
     const likeButtons = document.querySelectorAll('.like-button');
 
     for (const likeButton of likeButtons) {
-      likeButton.addEventListener('click', () => {
-        const index = likeButton.dataset.index
+
+      likeButton.addEventListener('click', (event) => {
+
+        event.stopPropagation();
+
+        const index = likeButton.dataset.index;
+
         if (comments[index].isLiked === true) {
           comments[index].isLiked = false;
           comments[index].likes -= 1;
@@ -67,6 +72,30 @@
           comments[index].isLiked = true;
           comments[index].likes += 1;
         };
+
+        renderComments();
+
+      });
+    };
+  };
+
+  deleteBtn.addEventListener('click', () => {
+    comments.pop();
+    renderComments();
+  });
+
+  const copyToRespond = () => {
+
+    const commentEls = document.querySelectorAll(".comment");
+
+    for (const commentEl of commentEls) {
+
+      const commentIndex = commentEl.dataset.index;
+
+      commentEl.addEventListener('click', () => {
+
+        userComment.value = `> ${comments[commentIndex].name} "${comments[commentIndex].text}"`;
+
         renderComments();
       });
     };
@@ -74,7 +103,7 @@
 
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
-      return `<li class="comment">
+      return `<li class="comment" data-index="${index}">
         <div class="comment-header">
           <div>${comment.name}</div>
           <div>${comment.date}</div>
@@ -95,6 +124,8 @@
     commentsList.innerHTML = commentsHtml;
 
     initLikeButtonListeners();
+    copyToRespond();
+
   };
 
   renderComments();
@@ -122,9 +153,17 @@
     };
 
     comments.push({
-      name: userName.value,
+      name: userName.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       date: new Date().getDate() + '.' + month + '.' + new Date().getFullYear().toString().substr(-2) + ' ' + hour + ':' + minutes,
-      text: userComment.value,
+      text: userComment.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       likes: 0,
       isLiked: false,
     });

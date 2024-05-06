@@ -175,16 +175,8 @@
     fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
       method: "POST",
       body: JSON.stringify({
-        name: userName.value
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;"),
-        text: userComment.value
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;"),
+        name: userName.value,
+        text: userComment.value,
       }),
     });
 

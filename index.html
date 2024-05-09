@@ -15,7 +15,7 @@
     <div class="noBrainer">
       <button class="delete-button" id="delBtn"> Удалить </button>
     </div>
-    <div class="add-form">
+    <div class="add-form" id="comment-form">
       <input type="text" class="add-form-name" id="nameFormId" placeholder="Введите ваше имя" />
       <textarea type="textarea" class="add-form-text" id="textFormId" placeholder="Введите ваш коментарий"
         rows="4"></textarea>
@@ -35,10 +35,14 @@
   const userComment = document.getElementById('textFormId');
   const submitBtn = document.getElementById('button');
   const likesCounter = document.getElementById('likesCounterId');
+  const commentForm = document.getElementById('comment-form');
 
   let comments = [];
 
+  commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
+
   const fetchGet = () => {
+
     return fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
       method: "GET",
     }).then((response) => response.json())
@@ -104,10 +108,15 @@
     };
   };
 
-  deleteBtn.addEventListener('click', () => {
-    comments.pop();
-    renderComments();
-  });
+  // deleteBtn.addEventListener('click', () => {
+
+  //   const id = comments.length;
+  //   fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments/" + id, {
+  //     method: "DELETE",
+  //   })
+  //     .then((response) => response.json())
+  //     .then(() => fetchGet())
+  // });
 
   const copyToRespond = () => {
 
@@ -171,15 +180,24 @@
 
     submitBtn.disabled = false;
 
+    // commentForm.textContent = "Комментарий добавляется";
+
+    submitBtn.textContent = "Комментарий добавляется";
+    submitBtn.disabled = true;
+
     fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
       method: "POST",
       body: JSON.stringify({
         name: userName.value,
         text: userComment.value,
       }),
-    });
-
-    fetchGet();
+    })
+      .then(() => fetchGet())
+      .then(() => {
+        // не знаю что написать в commentForm.textContent чтобы вернуть форму добаления
+        submitBtn.textContent = "Написать";
+        submitBtn.disabled = false;
+      });
 
     userName.value = '';
     userComment.value = '';

@@ -15,7 +15,7 @@
     <div class="noBrainer">
       <button class="delete-button" id="delBtn"> Удалить </button>
     </div>
-    <div class="add-form">
+    <div class="add-form" id="comment-form">
       <input type="text" class="add-form-name" id="nameFormId" placeholder="Введите ваше имя" />
       <textarea type="textarea" class="add-form-text" id="textFormId" placeholder="Введите ваш коментарий"
         rows="4"></textarea>
@@ -35,13 +35,23 @@
   const userComment = document.getElementById('textFormId');
   const submitBtn = document.getElementById('button');
   const likesCounter = document.getElementById('likesCounterId');
+  const commentForm = document.getElementById('comment-form');
 
   let comments = [];
 
+  commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
+
   const fetchGet = () => {
+
     return fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
       method: "GET",
-    }).then((response) => response.json())
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else if (response.status === 500) {
+        throw new Error('Bad request');
+      };
+    })
       .then((responseData) => {
         const appComments = responseData.comments.map((comment) => {
 
@@ -74,6 +84,17 @@
         comments = appComments;
 
         renderComments();
+      })
+      .catch((error) => {
+        if (error.message === "Bad request") {
+          alert("Сервер сломался, попробуй позже");
+          console.log(error.message);
+          return;
+        } else {
+          alert('Кажется, у вас сломался интернет, попробуйте позже');
+          console.log(error.message);
+          return;
+        };
       });
   };
 
@@ -104,10 +125,15 @@
     };
   };
 
-  deleteBtn.addEventListener('click', () => {
-    comments.pop();
-    renderComments();
-  });
+  // deleteBtn.addEventListener('click', () => {
+
+  //   const id = comments.length;
+  //   console.log(id);
+  //   fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments/" + id, {
+  //     method: "DELETE",
+  //   })
+  //     .then(() => fetchGet())
+  // });
 
   const copyToRespond = () => {
 
@@ -171,18 +197,56 @@
 
     submitBtn.disabled = false;
 
+    // commentForm.textContent = "Комментарий добавляется";
+    // commentForm.style.display = 'none';
+
+
+    submitBtn.textContent = "Комментарий добавляется";
+    submitBtn.disabled = true;
+
     fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
       method: "POST",
       body: JSON.stringify({
         name: userName.value,
         text: userComment.value,
+        forceError: true,
       }),
-    });
-
-    fetchGet();
-
-    userName.value = '';
-    userComment.value = '';
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          return fetchGet();
+        } else if (response.status === 400) {
+          throw new Error('User error');
+        } else if (response.status === 500) {
+          throw new Error('Bad request');
+        };
+      })
+      .then(() => {
+        // не знаю что написать в commentForm.textContent чтобы вернуть форму добаления
+        // commentForm.style.display = 'flex';
+        submitBtn.textContent = "Написать";
+        submitBtn.disabled = false;
+        userName.value = '';
+        userComment.value = '';
+      })
+      .catch((error) => {
+        if (error.message === "Bad request") {
+          alert("Сервер сломался, попробуй позже");
+          submitBtn.textContent = "Написать";
+          submitBtn.disabled = false;
+          console.log(error.message);
+        } else if (error.message === 'User error') {
+          alert("Имя и комментарий должны быть не короче 3 символов");
+          submitBtn.textContent = "Написать";
+          submitBtn.disabled = false;
+          console.log(error.message);
+        } else {
+          alert('Кажется, у вас сломался интернет, попробуйте позже');
+          submitBtn.textContent = "Написать";
+          submitBtn.disabled = false;
+          console.log(error.message);
+        };
+      })
   };
 
   submitBtn.addEventListener("click", clickEvent);

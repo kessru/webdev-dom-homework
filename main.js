@@ -2,14 +2,13 @@
 
 import { getComments } from "./api.js";
 import { postComment } from "./api.js";
+import { renderCom } from "./render.js";
 
 const commentsList = document.getElementById('commentsId');
-const deleteBtn = document.getElementById('delBtn');
+// const deleteBtn = document.getElementById('delBtn');
 const userName = document.getElementById('nameFormId');
 const userComment = document.getElementById('textFormId');
 const submitBtn = document.getElementById('button');
-const likesCounter = document.getElementById('likesCounterId');
-const commentForm = document.getElementById('comment-form');
 
 let comments = [];
 
@@ -90,16 +89,6 @@ const initLikeButtonListeners = () => {
     };
 };
 
-// deleteBtn.addEventListener('click', () => {
-
-//   const id = comments.length;
-//   console.log(id);
-//   fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments/" + id, {
-//     method: "DELETE",
-//   })
-//     .then(() => fetchGet())
-// });
-
 const copyToRespond = () => {
 
     const commentEls = document.querySelectorAll(".comment");
@@ -118,35 +107,8 @@ const copyToRespond = () => {
 };
 
 const renderComments = () => {
-    const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment" data-index="${index}">
-      <div class="comment-header">
-        <div>${comment.name
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")}
-        </div>
-        <div>${comment.date}</div>
-      </div>
-      <div class="comment-body">
-        <div class="comment-text">
-         ${comment.text
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")}
-        </div>
-      </div>
-      <div class="comment-footer">
-        <div class="likes">
-          <span class="likes-counter" id="likesCounterId">${comment.likes}</span>
-          <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ''}"></button>
-        </div>
-      </div>
-    </li>`}).join('');
 
-    commentsList.innerHTML = commentsHtml;
+    renderCom(comments, commentsList);
 
     initLikeButtonListeners();
     copyToRespond();
@@ -169,19 +131,19 @@ const clickEvent = () => {
     submitBtn.textContent = "Комментарий добавляется";
     submitBtn.disabled = true;
 
-   
+
     postComment({
         name: userName.value,
         text: userComment.value,
     }).then((response) => {
-            if (response.status === 201) {
-                return fetchGet();
-            } else if (response.status === 400) {
-                throw new Error('User error');
-            } else if (response.status === 500) {
-                throw new Error('Bad request');
-            };
-        })
+        if (response.status === 201) {
+            return fetchGet();
+        } else if (response.status === 400) {
+            throw new Error('User error');
+        } else if (response.status === 500) {
+            throw new Error('Bad request');
+        };
+    })
         .then(() => {
             // не знаю что написать в commentForm.textContent чтобы вернуть форму добаления
             // commentForm.style.display = 'flex';

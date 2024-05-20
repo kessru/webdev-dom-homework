@@ -1,4 +1,4 @@
-export function getComments() {
+export function getComments({ fetchGet }) {
     return fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
         method: "GET",
     }).then((response) => {
@@ -10,13 +10,13 @@ export function getComments() {
     });
 };
 
-export function postComment({ name, text }) {
+export function postComment({ name, text, fetchGet }) {
     return fetch("https://wedev-api.sky.pro/api/v1/kseniia-ovechkina/comments", {
         method: "POST",
         body: JSON.stringify({
             name: name,
             text: text,
-            forceError: true,
+            // forceError: true,
         }),
     });
 };

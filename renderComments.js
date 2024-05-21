@@ -1,4 +1,4 @@
-import { commentPostListener, copyToRespond, initLikeButtonListeners } from "./listeners.js";
+import { copyToRespond, initLikeButtonListeners } from "./listeners.js";
 import { safeInput } from "./helpers.js";
 
 const commentsList = document.getElementById('commentsId');
@@ -20,7 +20,7 @@ export const renderComments = ({ comments }) => {
       </div>
       <div class="comment-footer">
         <div class="likes">
-          <span class="likes-counter" id="likesCounterId">${comment.likes}</span>
+          <span class="likes-counter">${comment.likes}</span>
           <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ''}"></button>
         </div>
       </div>

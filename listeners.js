@@ -24,7 +24,7 @@ export const initLikeButtonListeners = ({ comments }) => {
 
         });
     };
-    // renderComments({ comments });
+    return renderComments({ comments });
 };
 
 export const copyToRespond = ({ comments }) => {

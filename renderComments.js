@@ -3,8 +3,11 @@ import { copyToRespond, initLikeButtonListeners } from "./listeners.js";
 const commentsList = document.getElementById('commentsId');
 
 export const renderComments = ({ comments }) => {
+
     const commentsHtml = comments.map((comment, index) => {
-        return `<li class="comment" data-index="${index}">
+
+        return `
+        <li class="comment" data-index="${index}">
       <div class="comment-header">
         <div>${comment.name
                 .replaceAll("&", "&amp;")
@@ -29,11 +32,12 @@ export const renderComments = ({ comments }) => {
           <button data-index="${index}" class="like-button ${comment.isLiked ? "-active-like" : ''}"></button>
         </div>
       </div>
-    </li>`}).join('');
+    </li>
+    `}).join('');
 
     commentsList.innerHTML = commentsHtml;
 
-    // initLikeButtonListeners({ comments }); /* Doesn't work */
+    initLikeButtonListeners({ comments }); /* Doesn't work */
     copyToRespond({ comments });
 
 };

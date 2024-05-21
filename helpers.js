@@ -19,3 +19,13 @@ export function getDate({ comment }) {
 
     return commentDate = new Date(comment.date).getDate() + '.' + month + '.' + new Date(comment.date).getFullYear().toString().substr(-2) + ' ' + hour + ':' + minutes;
 };
+
+export function safeInput({ text }) {
+    return `
+    ${text
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")}
+        `
+}

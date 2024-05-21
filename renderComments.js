@@ -1,4 +1,5 @@
-import { copyToRespond, initLikeButtonListeners } from "./listeners.js";
+import { commentPostListener, copyToRespond, initLikeButtonListeners } from "./listeners.js";
+import { safeInput } from "./helpers.js";
 
 const commentsList = document.getElementById('commentsId');
 
@@ -9,21 +10,12 @@ export const renderComments = ({ comments }) => {
         return `
         <li class="comment" data-index="${index}">
       <div class="comment-header">
-        <div>${comment.name
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")}
+        <div>${safeInput({ text: comment.name })}
         </div>
         <div>${comment.date}</div>
       </div>
       <div class="comment-body">
-        <div class="comment-text">
-         ${comment.text
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")}
+        <div class="comment-text"> ${safeInput({ text: comment.text })}
         </div>
       </div>
       <div class="comment-footer">
@@ -37,7 +29,7 @@ export const renderComments = ({ comments }) => {
 
     commentsList.innerHTML = commentsHtml;
 
-    initLikeButtonListeners({ comments }); /* Doesn't work */
+    initLikeButtonListeners({ comments });
     copyToRespond({ comments });
 
 };

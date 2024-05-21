@@ -1,7 +1,9 @@
+import { postComment } from "./api.js";
 import { renderComments } from "./renderComments.js";
 
 const userName = document.getElementById('nameFormId');
 const userComment = document.getElementById('textFormId');
+const submitBtn = document.getElementById('button');
 
 export const initLikeButtonListeners = ({ comments }) => {
     const likeButtons = document.querySelectorAll('.like-button');
@@ -22,9 +24,9 @@ export const initLikeButtonListeners = ({ comments }) => {
                 comments[index].likes += 1;
             };
 
+            renderComments({ comments });
         });
     };
-    return renderComments({ comments });
 };
 
 export const copyToRespond = ({ comments }) => {
@@ -42,3 +44,73 @@ export const copyToRespond = ({ comments }) => {
         });
     };
 };
+
+export function commentPostListener({ fetchGet }) {
+    const clickEvent = () => {
+        if (userName.value === '' || userComment.value === '') {
+            alert('Введите данные');
+            submitBtn.disabled = true;
+            return;
+        };
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent = "Комментарий добавляется";
+        submitBtn.disabled = true;
+
+
+        postComment({
+            name: userName.value,
+            text: userComment.value,
+        })
+            .then((response) => {
+                if (response.status === 201) {
+                    return fetchGet();
+                } else if (response.status === 400) {
+                    throw new Error('User error');
+                } else if (response.status === 500) {
+                    throw new Error('Bad request');
+                };
+            })
+            .then(() => {
+                submitBtn.textContent = "Написать";
+                submitBtn.disabled = false;
+                userName.value = '';
+                userComment.value = '';
+            })
+            .catch((error) => {
+                if (error.message === "Bad request") {
+                    alert("Сервер сломался, попробуй позже");
+                    submitBtn.textContent = "Написать";
+                    submitBtn.disabled = false;
+                    console.log(error.message);
+                } else if (error.message === 'User error') {
+                    alert("Имя и комментарий должны быть не короче 3 символов");
+                    submitBtn.textContent = "Написать";
+                    submitBtn.disabled = false;
+                    console.log(error.message);
+                } else {
+                    alert('Кажется, у вас сломался интернет, попробуйте позже');
+                    submitBtn.textContent = "Написать";
+                    submitBtn.disabled = false;
+                    console.log(error.message);
+                };
+            })
+    };
+
+    submitBtn.addEventListener("click", clickEvent);
+
+    userComment.addEventListener("keyup", (event) => {
+        submitBtn.disabled = false;
+        if (event.key === "Enter") {
+            if (userName.value === '' || userComment.value === '') {
+                alert('Введите данные');
+                submitBtn.disabled = true;
+                return;
+            };
+            submitBtn.disabled = false;
+            submitBtn.click();
+            fetchGet();
+        };
+    });
+}

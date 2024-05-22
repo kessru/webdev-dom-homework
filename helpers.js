@@ -1,5 +1,3 @@
-let commentDate;
-
 export function getDate({ comment }) {
 
     let month = new Date(comment.date).getMonth() + 1;
@@ -17,7 +15,7 @@ export function getDate({ comment }) {
         minutes = '0' + minutes;
     };
 
-    return commentDate = new Date(comment.date).getDate() + '.' + month + '.' + new Date(comment.date).getFullYear().toString().substr(-2) + ' ' + hour + ':' + minutes;
+    return new Date(comment.date).getDate() + '.' + month + '.' + new Date(comment.date).getFullYear().toString().substr(-2) + ' ' + hour + ':' + minutes;
 };
 
 export function safeInput({ text }) {

@@ -2,14 +2,11 @@
 
 import { getComments } from "./api.js";
 import { getDate } from "./helpers.js";
-import { commentPostListener } from "./listeners.js";
 import { renderComments } from "./renderComments.js";
-
-const commentsList = document.getElementById('commentsId');
 
 let comments = [];
 
-commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
+
 
 const fetchGet = () => {
 
@@ -43,7 +40,5 @@ const fetchGet = () => {
 };
 
 fetchGet();
-
-commentPostListener({ fetchGet });
 
 console.log("It works hopefully!");

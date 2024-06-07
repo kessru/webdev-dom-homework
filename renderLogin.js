@@ -1,7 +1,7 @@
 import { login, setToken } from "./api.js";
-import { renderInputForm } from "./renderComments.js";
+import { renderInputForm, setName } from "./renderComments.js";
 
-export const renderLogin = () => {
+export const renderLogin = ({ comments, fetchGet }) => {
     const renderAllElements = document.getElementById('renderAll');
 
 
@@ -27,10 +27,13 @@ export const renderLogin = () => {
             login: loginInputElement.value,
             password: passwordInputElement.value,
         })
-    }).then((responseData) => {
-        setToken(responseData.user.token);
-    }).then(() => {
-        renderInputForm();
+            .then((responseData) => {
+                setToken(responseData.user.token);
+                setName(responseData.user.name);
+            })
+            .then(() => {
+                renderInputForm({ comments, fetchGet });
+            })
     });
 };
 

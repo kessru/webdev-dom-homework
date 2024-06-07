@@ -1,11 +1,10 @@
 import { postComment } from "./api.js";
-import { renderComments } from "./renderComments.js";
+import { renderComments, renderInputForm } from "./renderComments.js";
 
 const userName = document.getElementById('nameFormId');
 const userComment = document.getElementById('textFormId');
-const submitBtn = document.getElementById('button');
 
-export const initLikeButtonListeners = ({ comments }) => {
+export const initLikeButtonListeners = ({ comments, fetchGet }) => {
     const likeButtons = document.querySelectorAll('.like-button');
 
     for (const likeButton of likeButtons) {
@@ -24,7 +23,7 @@ export const initLikeButtonListeners = ({ comments }) => {
                 comments[index].likes += 1;
             };
 
-            renderComments({ comments });
+            renderInputForm({ comments, fetchGet });
         });
     };
 };
@@ -46,7 +45,11 @@ export const copyToRespond = ({ comments }) => {
 };
 
 export function commentPostListener({ fetchGet }) {
-    const clickEvent = () => {
+
+    const submitBtn = document.getElementById('button');
+
+    submitBtn.addEventListener("click", () => {
+
         if (userName.value === '' || userComment.value === '') {
             alert('Введите данные');
             submitBtn.disabled = true;
@@ -96,9 +99,7 @@ export function commentPostListener({ fetchGet }) {
                     console.log(error.message);
                 };
             })
-    };
-
-    submitBtn.addEventListener("click", clickEvent);
+    });
 
     userComment.addEventListener("keyup", (event) => {
         submitBtn.disabled = false;
@@ -113,4 +114,5 @@ export function commentPostListener({ fetchGet }) {
             fetchGet();
         };
     });
-}
+
+};

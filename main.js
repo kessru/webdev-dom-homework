@@ -6,8 +6,6 @@ import { renderComments } from "./renderComments.js";
 
 let comments = [];
 
-
-
 const fetchGet = () => {
 
     getComments().then((responseData) => {
@@ -24,7 +22,7 @@ const fetchGet = () => {
 
         comments = appComments;
 
-        renderComments({ comments });
+        renderComments({ comments, fetchGet });
     })
         .catch((error) => {
             if (error.message === "Bad request") {

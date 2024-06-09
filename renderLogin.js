@@ -1,12 +1,12 @@
 import { login, setToken } from "./api.js";
-import { renderInputForm, setName } from "./renderComments.js";
+import { renderInputForm } from "./renderUserInput.js";
 
 export const renderLogin = ({ comments, fetchGet }) => {
-    const renderAllElements = document.getElementById('renderAll');
 
+    const renderAllElements = document.getElementById('container');
 
     const loginHtml = `
-    <div class="container">
+    <div class="logib-box">
     <div class="login-form">
       <input type="text" class="add-form-name" id="login-input" placeholder="Логин" />
       <input type="text" class="add-form-password" id="password-input" placeholder="Пароль"></input>
@@ -29,7 +29,6 @@ export const renderLogin = ({ comments, fetchGet }) => {
         })
             .then((responseData) => {
                 setToken(responseData.user.token);
-                setName(responseData.user.name);
             })
             .then(() => {
                 renderInputForm({ comments, fetchGet });

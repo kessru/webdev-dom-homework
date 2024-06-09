@@ -1,8 +1,5 @@
 import { postComment } from "./api.js";
-import { renderComments, renderInputForm } from "./renderComments.js";
-
-const userName = document.getElementById('nameFormId');
-const userComment = document.getElementById('textFormId');
+import { renderInputForm } from "./renderUserInput.js";
 
 export const initLikeButtonListeners = ({ comments, fetchGet }) => {
     const likeButtons = document.querySelectorAll('.like-button');
@@ -30,6 +27,8 @@ export const initLikeButtonListeners = ({ comments, fetchGet }) => {
 
 export const copyToRespond = ({ comments }) => {
 
+    const userComment = document.getElementById('textFormId');
+
     const commentEls = document.querySelectorAll(".comment");
 
     for (const commentEl of commentEls) {
@@ -44,8 +43,10 @@ export const copyToRespond = ({ comments }) => {
     };
 };
 
-export function commentPostListener({ fetchGet }) {
+export function commentPostListener({ comments, fetchGet }) {
 
+    const userName = document.getElementById('nameFormId');
+    const userComment = document.getElementById('textFormId');
     const submitBtn = document.getElementById('button');
 
     submitBtn.addEventListener("click", () => {
@@ -68,7 +69,7 @@ export function commentPostListener({ fetchGet }) {
         })
             .then((response) => {
                 if (response.status === 201) {
-                    return fetchGet();
+                    return renderInputForm({ comments, fetchGet });
                 } else if (response.status === 400) {
                     throw new Error('User error');
                 } else if (response.status === 500) {

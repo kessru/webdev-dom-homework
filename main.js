@@ -3,6 +3,7 @@
 import { getComments } from "./api.js";
 import { getDate } from "./helpers.js";
 import { renderComments } from "./renderComments.js";
+import { renderLoginLink } from "./renderUserInput.js";
 
 let comments = [];
 
@@ -23,6 +24,8 @@ const fetchGet = () => {
         comments = appComments;
 
         renderComments({ comments, fetchGet });
+    }).then(() => {
+        renderLoginLink({ comments, fetchGet });
     })
         .catch((error) => {
             if (error.message === "Bad request") {

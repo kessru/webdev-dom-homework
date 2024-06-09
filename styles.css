@@ -2,7 +2,8 @@ body {
   margin: 0;
 }
 
-.container {
+.container,
+.logib-box {
   font-family: Helvetica;
   color: #ffffff;
   display: flex;

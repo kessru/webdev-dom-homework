@@ -23,7 +23,7 @@ export function postComment({ name, text }) {
     return fetch(commentsURL, {
         method: "POST",
         headers: {
-            Authorisation: `Bearer ${token}`
+            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
             name: name,

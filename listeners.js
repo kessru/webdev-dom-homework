@@ -1,4 +1,5 @@
 import { postComment } from "./api.js";
+import { renderComments } from "./renderComments.js";
 import { renderInputForm } from "./renderUserInput.js";
 
 export const initLikeButtonListeners = ({ comments, fetchGet }) => {
@@ -69,7 +70,7 @@ export function commentPostListener({ comments, fetchGet }) {
         })
             .then((response) => {
                 if (response.status === 201) {
-                    return renderInputForm({ comments, fetchGet });
+                    return fetchGet();
                 } else if (response.status === 400) {
                     throw new Error('User error');
                 } else if (response.status === 500) {

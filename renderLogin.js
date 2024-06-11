@@ -1,4 +1,4 @@
-import { login, setToken } from "./api.js";
+import { login, setToken, setUserName } from "./api.js";
 import { renderInputForm } from "./renderUserInput.js";
 
 export const renderLogin = ({ comments, fetchGet }) => {
@@ -6,6 +6,7 @@ export const renderLogin = ({ comments, fetchGet }) => {
     const renderAllElements = document.getElementById('container');
 
     const loginHtml = `
+    <div id="user-input">
     <div class="logib-box">
     <div class="login-form">
       <input type="text" class="add-form-name" id="login-input" placeholder="Логин" />
@@ -14,6 +15,7 @@ export const renderLogin = ({ comments, fetchGet }) => {
         <button class="login-button" id="loginButton">Войти</button>
       </div>
     </div>
+  </div>
   </div>`;
 
     renderAllElements.innerHTML = loginHtml;
@@ -29,10 +31,14 @@ export const renderLogin = ({ comments, fetchGet }) => {
         })
             .then((responseData) => {
                 setToken(responseData.user.token);
+                setUserName(responseData.user.name);
             })
             .then(() => {
                 renderInputForm({ comments, fetchGet });
             })
+            .catch((error) => {
+                alert(error.message);
+            });
     });
 };
 

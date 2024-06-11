@@ -1,13 +1,13 @@
 "use strict";
 
-import { getComments } from "./api.js";
+import { getComments, token } from "./api.js";
 import { getDate } from "./helpers.js";
 import { renderComments } from "./renderComments.js";
 import { renderLoginLink } from "./renderUserInput.js";
 
-let comments = [];
+export let comments = [];
 
-const fetchGet = () => {
+export const fetchGet = () => {
 
     getComments().then((responseData) => {
         const appComments = responseData.comments.map((comment) => {
@@ -25,7 +25,9 @@ const fetchGet = () => {
 
         renderComments({ comments, fetchGet });
     }).then(() => {
-        renderLoginLink({ comments, fetchGet });
+        if (!token) {
+            renderLoginLink({ comments, fetchGet });
+        };
     })
         .catch((error) => {
             if (error.message === "Bad request") {

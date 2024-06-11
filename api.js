@@ -7,6 +7,12 @@ export const setToken = (newToken) => {
     token = newToken;
 };
 
+export let userName;
+
+export const setUserName = (newUserName) => {
+    userName = newUserName;
+};
+
 export function getComments() {
     return fetch(commentsURL, {
         method: "GET",
@@ -40,5 +46,10 @@ export function login({ login, password }) {
             login,
             password,
         })
-    }).then((response) => response.json());
+    }).then((response) => {
+        if (response.status === 400) {
+            throw new Error("Введены неверные данные");
+        }
+        return response.json()
+    });
 };

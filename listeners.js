@@ -21,7 +21,7 @@ export const initLikeButtonListeners = ({ comments, fetchGet }) => {
                 comments[index].likes += 1;
             };
 
-            renderInputForm({ comments, fetchGet });
+            renderComments({ comments, fetchGet });
         });
     };
 };
@@ -80,7 +80,6 @@ export function commentPostListener({ comments, fetchGet }) {
             .then(() => {
                 submitBtn.textContent = "Написать";
                 submitBtn.disabled = false;
-                userName.value = '';
                 userComment.value = '';
             })
             .catch((error) => {
@@ -116,5 +115,5 @@ export function commentPostListener({ comments, fetchGet }) {
             fetchGet();
         };
     });
-
+  
 };

@@ -1,4 +1,5 @@
 import { login, setToken, setUserName } from "./api.js";
+import { renderComments } from "./renderComments.js";
 import { renderInputForm } from "./renderUserInput.js";
 
 export const renderLogin = ({ comments, fetchGet }) => {
@@ -6,6 +7,7 @@ export const renderLogin = ({ comments, fetchGet }) => {
     const renderAllElements = document.getElementById('container');
 
     const loginHtml = `
+    <ul class="comments" id="commentsId"></ul>
     <div id="user-input">
     <div class="logib-box">
     <div class="login-form">
@@ -25,6 +27,12 @@ export const renderLogin = ({ comments, fetchGet }) => {
     const passwordInputElement = document.getElementById("password-input");
 
     loginButtonElement.addEventListener("click", () => {
+
+        if (loginInputElement.value === '' || passwordInputElement.value === '') {
+            alert('Введите логин и пароль');
+            return;
+        };
+
         login({
             login: loginInputElement.value,
             password: passwordInputElement.value,
@@ -34,6 +42,7 @@ export const renderLogin = ({ comments, fetchGet }) => {
                 setUserName(responseData.user.name);
             })
             .then(() => {
+                renderComments({ comments, fetchGet });
                 renderInputForm({ comments, fetchGet });
             })
             .catch((error) => {

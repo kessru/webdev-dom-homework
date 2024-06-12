@@ -8,9 +8,8 @@ export const renderInputForm = ({ comments, fetchGet }) => {
     const userInputHtml = document.getElementById("user-input");
 
     const inputForm = `    
-    <ul class="comments" id="commentsId"></ul>
 <div class="add-form">
-    <input type="text" class="add-form-name" id="nameFormId" placeholder="Введите ваше имя" value="${userName}" readonly/>
+    <input type="text" class="add-form-name" id="nameFormId" value="${userName}" readonly/>
     <textarea type="textarea" class="add-form-text" id="textFormId" placeholder="Введите ваш коментарий"
       rows="4"></textarea>
     <div class="add-form-row">
@@ -21,7 +20,7 @@ export const renderInputForm = ({ comments, fetchGet }) => {
 
     userInputHtml.innerHTML = inputForm;
 
-    renderComments({ comments, fetchGet });
+  
     commentPostListener({ comments, fetchGet });
 };
 
@@ -43,7 +42,3 @@ export const renderLoginLink = ({ comments, fetchGet }) => {
     });
 
 };
-
-// export const renderUserInput = () => {
-
-// }

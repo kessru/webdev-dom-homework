@@ -1,5 +1,6 @@
 import { copyToRespond, initLikeButtonListeners } from "./listeners.js";
 import { safeInput } from "./helpers.js";
+import { token } from "./api.js";
 
 export let userName;
 
@@ -35,8 +36,12 @@ export const renderComments = ({ comments, fetchGet }) => {
 
     commentsList.innerHTML = commentsHtml;
 
-    initLikeButtonListeners({ comments, fetchGet });
-    copyToRespond({ comments });
+    if (token) {
+        initLikeButtonListeners({ comments, fetchGet });
+        copyToRespond({ comments });
+        
+    };
+
 
     // const commentsList = document.getElementById('commentsId');
     // commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';

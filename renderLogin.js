@@ -28,14 +28,14 @@ export const renderLogin = ({ comments, fetchGet }) => {
 
     loginButtonElement.addEventListener("click", () => {
 
-        if (loginInputElement.value === '' || passwordInputElement.value === '') {
+        if (loginInputElement.value.trim() === '' || passwordInputElement.value.trim() === '') {
             alert('Введите логин и пароль');
             return;
         };
 
         login({
-            login: loginInputElement.value,
-            password: passwordInputElement.value,
+            login: loginInputElement.value.trim(),
+            password: passwordInputElement.value.trim(),
         })
             .then((responseData) => {
                 setToken(responseData.user.token);

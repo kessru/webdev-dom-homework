@@ -5,16 +5,16 @@ import { token } from "./api.js";
 export let userName;
 
 export const setName = (newUserName) => {
-    userName = newUserName;
+  userName = newUserName;
 };
 
 export const renderComments = ({ comments, fetchGet }) => {
 
-    const commentsList = document.getElementById('commentsId');
+  const commentsList = document.getElementById('commentsId');
 
-    const commentsHtml = comments.map((comment, index) => {
+  const commentsHtml = comments.map((comment, index) => {
 
-        return `
+    return `
           <li class="comment" data-index="${index}">
             <div class="comment-header">
               <div id="userName">${safeInput({ text: comment.name })}
@@ -34,16 +34,14 @@ export const renderComments = ({ comments, fetchGet }) => {
           </li>
     `}).join('');
 
-    commentsList.innerHTML = commentsHtml;
+  commentsList.innerHTML = commentsHtml;
 
-    if (token) {
-        initLikeButtonListeners({ comments, fetchGet });
-        copyToRespond({ comments });
-        
-    };
+  if (token) {
+    initLikeButtonListeners({ comments, fetchGet });
+  };
 
 
-    // const commentsList = document.getElementById('commentsId');
-    // commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
+  // const commentsList = document.getElementById('commentsId');
+  // commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
 
 };

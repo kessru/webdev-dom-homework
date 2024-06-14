@@ -1,6 +1,5 @@
 import { postComment } from "./api.js";
 import { renderComments } from "./renderComments.js";
-import { renderInputForm } from "./renderUserInput.js";
 
 export const initLikeButtonListeners = ({ comments, fetchGet }) => {
     const likeButtons = document.querySelectorAll('.like-button');
@@ -29,7 +28,6 @@ export const initLikeButtonListeners = ({ comments, fetchGet }) => {
 export const copyToRespond = ({ comments }) => {
 
     const userComment = document.getElementById('textFormId');
-
     const commentEls = document.querySelectorAll(".comment");
 
     for (const commentEl of commentEls) {
@@ -44,7 +42,7 @@ export const copyToRespond = ({ comments }) => {
     };
 };
 
-export function commentPostListener({ comments, fetchGet }) {
+export function commentPostListener({ fetchGet }) {
 
     const userName = document.getElementById('nameFormId');
     const userComment = document.getElementById('textFormId');
@@ -115,5 +113,5 @@ export function commentPostListener({ comments, fetchGet }) {
             fetchGet();
         };
     });
-  
+
 };

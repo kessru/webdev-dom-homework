@@ -1,17 +1,13 @@
 "use strict";
 
-import { getComments } from "./api.js";
+import { getComments, token } from "./api.js";
 import { getDate } from "./helpers.js";
-import { commentPostListener } from "./listeners.js";
 import { renderComments } from "./renderComments.js";
+import { renderLoginLink } from "./renderUserInput.js";
 
-const commentsList = document.getElementById('commentsId');
+export let comments = [];
 
-let comments = [];
-
-commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
-
-const fetchGet = () => {
+export const fetchGet = () => {
 
     getComments().then((responseData) => {
         const appComments = responseData.comments.map((comment) => {
@@ -27,7 +23,11 @@ const fetchGet = () => {
 
         comments = appComments;
 
-        renderComments({ comments });
+        renderComments({ comments, fetchGet });
+    }).then(() => {
+        if (!token) {
+            renderLoginLink({ comments, fetchGet });
+        };
     })
         .catch((error) => {
             if (error.message === "Bad request") {
@@ -43,7 +43,5 @@ const fetchGet = () => {
 };
 
 fetchGet();
-
-commentPostListener({ fetchGet });
 
 console.log("It works hopefully!");

@@ -1,4 +1,4 @@
-import { format } from "./node_modules/date-fns";
+import { format } from "date-fns";
 
 export function getDate({ comment }) {
   return format(new Date(comment.date), "yyyy-MM-dd hh.mm.ss");

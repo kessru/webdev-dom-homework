@@ -41,7 +41,4 @@ export const renderComments = ({ comments, fetchGet }) => {
   };
 
 
-  // const commentsList = document.getElementById('commentsId');
-  // commentsList.textContent = 'Пожалуйста подождите, комментарии загружаются...';
-
 };
